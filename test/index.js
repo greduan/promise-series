@@ -56,8 +56,7 @@ describe('promise-series', function () {
 
     return res.run()
       .then(function () {
-        td.verify(f('one'));
-        td.verify(f('one'));
+        td.verify(f('one'), { times: 2 });
       });
   });
 
@@ -83,6 +82,7 @@ describe('promise-series', function () {
 
     return res.run()
       .then(function () {
+        // TODO: This doesn't test for order properly
         td.verify(f('one'));
         td.verify(f('two'));
       });
