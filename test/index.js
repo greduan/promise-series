@@ -61,13 +61,13 @@ describe('promise-series', function () {
   });
 
   it('Should run passed in functions in order', function () {
-    var f = td.function();
     var res = ser();
+    var order = [];
 
     res(function () {
       return new Promise(function (resolve) {
         setTimeout(function () {
-          f('one');
+          order.push(1);
 
           resolve();
         }, 100);
@@ -75,16 +75,14 @@ describe('promise-series', function () {
     });
 
     res(function () {
-      f('two');
+      order.push(2);
 
       return Promise.resolve();
     });
 
     return res.run()
       .then(function () {
-        // TODO: This doesn't test for order properly
-        td.verify(f('one'));
-        td.verify(f('two'));
+        assert.deepEqual(order, [1, 2]);
       });
   });
 
